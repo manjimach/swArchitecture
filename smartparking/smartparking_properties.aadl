@@ -1,0 +1,58 @@
+property set smartparking_properties is
+	with smartparking,     --AADL components that use the properties herein
+    EMV2,  --error modeling annex V2 predeclared properties
+    Timing_Properties;
+   
+   --connection properties
+   Bandwidth : Data_Volume applies to (all);
+
+   Bandwidth_Range : type range of Data_Volume;
+
+   Bandwidth_Scale : smartparking_properties::Bandwidth_Range applies to (bus);
+
+   Available_Bandwidth : list of Data_Volume applies to (bus);
+
+   Required_Bandwidth : Data_Volume applies to
+    (abstract, system, device, bus access, connection);
+    
+    --vehicle properties
+    Velocity_Type: TYPE AADLREAL UNITS smartparking_properties::Velocity_Units;
+  	
+  	Velocity_Units: TYPE UNITS (mph);
+  	
+  	Frequency_Type: TYPE AADLREAL UNITS smartparking_properties::Frequency_Units;
+  	
+  	Frequency_Units: TYPE UNITS (GHz);
+  	
+  	Angle_Type: TYPE AADLREAL UNITS smartparking_properties::Angle_Units;
+  	
+  	Angle_Units: TYPE UNITS (degrees);
+  	
+  	Cmds: enumeration (on,off,engaged) applies to (data, port, system);
+    
+  --system properties
+  Initialization_Timeout : Timing_Properties::Time => 5 sec
+    applies to (all);
+
+--rate at which user interface fails
+  InterfaceFailureRate : constant EMV2::DistributionSpecification => 
+    [ProbabilityValue => 1.0E-7; Distribution => Fixed;];
+    
+--error rate of detection of interface failure   
+  DetectionInterfaceFailureRate : constant EMV2::DistributionSpecification => 
+    [ProbabilityValue => 1.0E-10; Distribution => Fixed;];
+
+--rate at which loc_ctrl/remote vehicle OBE fails
+  InfoFailureRate : constant EMV2::DistributionSpecification => 
+    [ProbabilityValue => 1.2E-7; Distribution => Fixed;];
+    
+--error rate of detection of Monitoring failure   
+  MonitorStatusFailureRate : constant EMV2::DistributionSpecification => 
+    [ProbabilityValue => 1.3E-10; Distribution => Fixed;];
+
+--rate at which is road equipment fails
+  RadarFailureRate : constant EMV2::DistributionSpecification => 
+    [ProbabilityValue => 1.5E-9; Distribution => Fixed;];
+    
+	
+end smartparking_properties;
